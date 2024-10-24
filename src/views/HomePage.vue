@@ -14,7 +14,7 @@
     <h2>Actors</h2>
     <div class="actors-list">
       <ActorCard
-          v-for="movie in actors.slice(0, 4)"
+          v-for="actor in actors.slice(0, 4)"
           :key="actor.id"
           :actor="actor"
           @click="() => handleActorClick(actor)"
