@@ -7,13 +7,13 @@
     </div>
 
     <div class="actors-list">
-      <ActorCard v-for="actor in filteredActors" :key="actor.id" :actor="actor" @click="handleActorClick(actor)"/>
+      <ActorCard v-for="actor in filteredActors" :key="actor.id" :actor="actor" @click="handleActorClick(actor)" />
     </div>
   </div>
 </template>
 
 <script>
-import {getActors, handleActorClick} from '@/Services/ActorService';
+import { getActors, handleActorClick } from '@/services/ActorService';
 import ActorCard from '../components/ActorCard.vue';
 
 export default {

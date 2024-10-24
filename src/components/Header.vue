@@ -6,30 +6,49 @@
           <router-link to="/">Home</router-link>
         </li>
         <li>
-          <router-link to="movies">Movies</router-link>
+          <router-link to="/movies">Movies</router-link>
         </li>
         <li>
-          <router-link to="actors">Actors</router-link>
+          <router-link to="/actors">Actors</router-link>
         </li>
         <li>
-          <router-link to="categories">Categories</router-link>
+          <router-link to="/categories">Categories</router-link>
         </li>
         <li>
-          <router-link to="login">Login</router-link>
-        </li>
-        <li>
-          <router-link to="register">Create user</router-link>
+          <div v-if="loggedIn">
+            <router-link to="/profile">Profile</router-link>
+
+            <span>{{ user.email }}</span> <!-- Affiche l'email de l'utilisateur -->
+            <button @click="onLogout">Se déconnecter</button>
+          </div>
+          <div v-else>
+            <router-link to="/register">Create user</router-link>
+            <router-link to="/login">Login</router-link>
+          </div>
         </li>
       </ul>
     </nav>
-
   </div>
 </template>
+
 <script>
+import { mapActions, mapState } from 'pinia';
+import { useSession } from "@/stores/session"; // Assurez-vous que le chemin est correct
+
 export default {
-  name: 'HeaderComponent', // Nomme le composant
+  computed: {
+    ...mapState(useSession, ["loggedIn", "user"]),
+  },
+  methods: {
+    ...mapActions(useSession, ["logout"]),
+    onLogout() {
+      this.logout(); // Appel de l'action logout
+      this.$router.push("/login"); // Redirection vers la page de login
+    },
+  },
 };
 </script>
+
 <style>
 nav {
   background-color: #4a4369;

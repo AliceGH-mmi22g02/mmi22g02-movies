@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { addActor } from '@/Services/ActorService'; // Vérifiez que le chemin est correct
+import { addActor } from '@/services/ActorService'; // Vérifiez que le chemin est correct
 
 export default {
   data() {

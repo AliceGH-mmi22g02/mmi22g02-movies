@@ -1,5 +1,5 @@
 <template>
-  <div class="actorCard" @click="handleClick"> <!-- Gère le clic ici -->
+  <div class="actorCard" @click="handleClick">
     <img :src="actor.media" alt="Photo de l'acteur" />
     <h3>{{ actor.lastname }} {{ actor.firstname }}</h3>
     <p>Date de naissance : {{ formattedBirthDate }}</p>
@@ -13,7 +13,10 @@
 <script>
 export default {
   props: {
-    actor: Object
+    actor: {
+      type: Object,
+      required: true
+    }
   },
   computed: {
     formattedBirthDate() {
@@ -31,7 +34,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .actorCard {

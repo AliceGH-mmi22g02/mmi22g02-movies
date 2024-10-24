@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getMovies, handleMovieClick } from '@/Services/MovieService';
+import { getMovies, handleMovieClick } from '@/services/MovieService';
 import MovieCard from '../components/MovieCard.vue';
 
 export default {
@@ -35,7 +35,7 @@ export default {
     };
   },
   async created() {
-    this.movies = await getMovies();
+    await this.fetchMovies();
   },
   computed: {
     filteredMovies() {
@@ -45,6 +45,14 @@ export default {
     }
   },
   methods: {
+    async fetchMovies() {
+      try {
+        this.movies = await getMovies();
+      } catch (error) {
+        console.error('Erreur lors de la récupération des films:', error);
+        // Gérer l'affichage d'un message d'erreur à l'utilisateur si nécessaire
+      }
+    },
     handleMovieClick(movie) {
       handleMovieClick(movie, this.$router);
     },

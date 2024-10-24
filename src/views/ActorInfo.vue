@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getActorById } from '@/Services/ActorService';
+import { getActorById } from '@/services/ActorService';
 import ActorCard from "@/components/ActorCard.vue";
 
 export default {

@@ -1,17 +1,24 @@
 import axios from 'axios';
 
-const API_URL = 'http://symfony.mmi-troyes.fr:8319/api/categories';
+const API_URL = 'http://localhost:8319/api/categories';
 
+// Récupérer toutes les catégories
 export const getCategories = async () => {
     try {
-        const { data } = await axios.get(API_URL,);
+        const token = localStorage.getItem('token');
+        const { data } = await axios.get(API_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return data['hydra:member'] || [];
     } catch (error) {
-        console.error('Erreur lors de la récupération des films:', error);
-        return [];
+        console.error('Erreur lors de la récupération des catégories:', error);
+        throw new Error('Impossible de récupérer les catégories.');
     }
 };
 
+// Ajouter une nouvelle catégorie
 export const addCategory = async (category) => {
     try {
         category.createdAt = new Date().toISOString();
@@ -24,6 +31,7 @@ export const addCategory = async (category) => {
     }
 };
 
+// Supprimer une catégorie
 export const delCategory = async (id) => {
     try {
         await axios.delete(`${API_URL}/${id}`);

@@ -1,8 +1,6 @@
 <template>
   <div class="loginForm">
     <form @submit.prevent="onSubmitLogin">
-      <p>Remplissez ce formulaire pour vous connecter.</p>
-
       <label for="email"><b>Email</b></label>
       <input
           type="text"
@@ -24,38 +22,44 @@
       />
 
       <p><button type="submit">Se connecter</button></p>
+      <p v-if="error" class="error">{{ error }}</p>
     </form>
   </div>
 </template>
 
 <script>
+import { useSession } from "@/stores/session";
+import UserService from '@/services/UserService.js';
 
 export default {
   data() {
     return {
       email: '',
       password: '',
-      error: null
+      error: null,
     };
   },
   methods: {
     async onSubmitLogin() {
       this.error = null;
-      /*try {
-        /const response = await UserService.login({ email: this.email, password: this.password });
+      try {
+        const response = await UserService.login({ email: this.email, password: this.password });
         const session = useSession();
         session.login({ user: response.user, token: response.token });
-        this.$router.push('/search');
+        this.$router.push('/');
       } catch (error) {
-        this.error = 'Échec de la connexion : ' + error.message;
-      }*/
-    }
-  }
+        this.error = error.toString();
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
 input {
   max-width: 500px;
+}
+.error {
+  color: red;
 }
 </style>

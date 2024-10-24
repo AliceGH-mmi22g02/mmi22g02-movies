@@ -9,8 +9,9 @@ import MovieInfo from '../views/MovieInfo.vue';
 import AddMovie from '../views/AddMovie.vue';
 import Login from '../views/LoginView.vue';
 import AddCategory from "@/views/AddCategory.vue";
-// import Register from '../views/RegisterView.vue';
-// import { useSession } from '../stores/session';
+import Register from '@/views/RegisterView.vue';
+import ProfileInfo from '@/views/ProfileInfo.vue';
+import { useSession } from '@/stores/session';
 
 const router = new VueRouter({
   mode: 'history',
@@ -47,7 +48,17 @@ const router = new VueRouter({
       component: Login,
     },
     {
-      path: '/:id',
+      path: '/register',
+      name: 'register',
+      component: Register,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileInfo,
+    },
+    {
+      path: '/actor/:id',
       name: 'ActorInfo',
       component: ActorInfo,
     },
@@ -57,7 +68,7 @@ const router = new VueRouter({
       component: AddActor,
     },
     {
-      path: '/:id',
+      path: '/movie/:id',
       name: 'MovieInfo',
       component: MovieInfo,
     },
@@ -68,4 +79,15 @@ const router = new VueRouter({
     }
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  const session = useSession();
+
+  if (session.loggedIn === true && to.name === "login") {
+    next('search');
+  } else {
+    next();
+  }
+});
+
 export default router;

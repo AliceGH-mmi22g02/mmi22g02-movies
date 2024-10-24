@@ -18,15 +18,15 @@ export default {
   computed: {
     formattedReleaseDate() {
       const date = new Date(this.movie.releaseDate);
-      return date.toLocaleDateString();
+      return date.toLocaleDateString(); // Formate la date en fonction des paramètres régionaux
     },
     formattedActors() {
-      return this.movie.actors.join(', ');
+      return this.movie.actors ? this.movie.actors.join(', ') : ''; // Vérifie si les acteurs existent
     }
   },
   methods: {
     handleClick() {
-      this.$emit('click', this.movie);
+      this.$emit('click', this.movie); // Émet un événement avec le film lorsqu'il est cliqué
     }
   }
 };
@@ -38,12 +38,13 @@ export default {
   border: 1px solid #ddd;
   padding: 15px;
   width: 80%;
-  margin: 50px;
+  margin: 50px auto; /* Centrer horizontalement */
   cursor: pointer;
+  transition: background-color 0.3s; /* Ajoute une transition pour un effet fluide */
 }
 
 .movieCard:hover {
-  background-color: #cab2ff;
+  background-color: #cab2ff; /* Change la couleur au survol */
 }
 
 .movieCard img {

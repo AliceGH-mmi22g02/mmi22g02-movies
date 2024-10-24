@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import { getMovieById } from '@/Services/MovieService';
-import { getActorById } from '@/Services/ActorService';
+import { getMovieById } from '@/services/MovieService';
+import { getActorById } from '@/services/ActorService';
 import MovieCard from "@/components/MovieCard.vue";
 import ActorCard from "@/components/ActorCard.vue";
 

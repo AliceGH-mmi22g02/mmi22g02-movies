@@ -5,9 +5,10 @@
     <h2>Movies</h2>
     <div class="movies-list">
       <MovieCard
-          v-for="movie in movies.slice(0, 4)"          :key="movie.id"
+          v-for="movie in movies.slice(0, 4)"
+          :key="movie.id"
           :movie="movie"
-          @click="() => handleMovieClick(movie)"
+          @click="() => movieClickHandler(movie)"
       />
     </div>
 
@@ -17,7 +18,7 @@
           v-for="actor in actors.slice(0, 4)"
           :key="actor.id"
           :actor="actor"
-          @click="() => handleActorClick(actor)"
+          @click="() => actorClickHandler(actor)"
       />
     </div>
   </div>
@@ -28,26 +29,24 @@ import { ref, onMounted } from 'vue';
 import router from '@/router';
 import MovieCard from '@/components/MovieCard.vue';
 import ActorCard from "@/components/ActorCard.vue";
-import { getLatestMovies } from '@/Services/MovieService';
-import { getLatestActors } from '@/Services/ActorService';
+import { getLatestMovies, handleMovieClick } from '@/services/MovieService';
+import { getLatestActors, handleActorClick } from '@/services/ActorService';
 
 // Variables
 const movies = ref([]);
 const actors = ref([]);
 
 // Fonction pour gérer le clic sur un film
-const handleMovieClick = (movie: any) => {
-  // Utilisation de router pour naviguer vers la page de détails du film
-  router.push({ name: 'MovieInfo', params: { id: movie.id } });
+const movieClickHandler = (movie: any) => {
+  handleMovieClick(movie, router);
 };
 
 // Fonction pour gérer le clic sur un acteur
-const handleActorClick = (actor: any) => {
-  // Utilisation de router pour naviguer vers la page de détails de l'acteur
-  router.push({ name: 'ActorInfo', params: { id: actor.id } });
+const actorClickHandler = (actor: any) => {
+  handleActorClick(actor, router);
 };
 
-// Appel pour récupérer les 4 derniers films et acteurs lors du montage du composant
+// Appel pour récupérer les derniers films et acteurs lors du montage du composant
 onMounted(async () => {
   try {
     movies.value = await getLatestMovies();

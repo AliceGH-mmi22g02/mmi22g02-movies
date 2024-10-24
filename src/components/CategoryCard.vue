@@ -10,11 +10,6 @@ export default {
   props: {
     category: Object
   },
-  methods: {
-    deleteCategory() {
-      this.$emit('delete-category', this.category); // Émet un événement vers le parent
-    }
-  }
 };
 </script>
 
@@ -30,25 +25,5 @@ export default {
 
 .categoryCard:hover {
   background-color: #cab2ff;
-}
-
-.movieCard img {
-  width: 150px;
-  height: 150px;
-  margin-top: 40px;
-  object-fit: cover;
-  margin-bottom: 15px;
-}
-
-.movieCard h3 {
-  font-size: 1.4em;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.movieCard p {
-  color: #666;
-  font-size: 1em;
-  margin: 5px 0;
 }
 </style>

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { addCategory } from '@/Services/CategoryService';
+import { addCategory } from '@/services/CategoryService';
 
 export default {
   data() {
