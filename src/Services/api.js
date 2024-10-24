@@ -1,33 +1,33 @@
 import axios from 'axios';
+import { useSession } from '../Stores/session.js';
 
 export const BASE_URL = 'http://symfony.mmi-troyes.fr:8319/api';
 
 export async function api(url, params = {}) {
-    const session = useSession();  // Récupérer la session
+    const session = useSession();
 
-    // Créer les headers avec le token
+    // Préparez l'en-tête avec le token d'autorisation
     const headers = {
-        Authorization: `Bearer ${session.getToken()}`,  // Utilisation de la méthode getToken()
+        Authorization: `Bearer ${session.token}`,
         'Content-Type': 'application/json',
-        ...params.headers  // Ajout des headers supplémentaires si fournis
-    };
-
-    // Créer les paramètres Axios en combinant les options par défaut et celles fournies
-    const axiosParams = {
-        method: params.method || 'GET',  // Par défaut, utiliser GET
-        url: BASE_URL + url,             // URL complète de l'API
-        headers,
-        data: params.data || {},         // Les données à envoyer (par exemple pour POST)
-        ...params                       // Fusionner avec d'autres paramètres fournis
+        ...params.headers, // Ajoutez les autres en-têtes s'il y en a
     };
 
     try {
-        // Faire l'appel API avec Axios
-        const response = await axios(axiosParams);
-        return response.data;  // Retourner la réponse si tout est OK
+        // Envoyez la requête avec axios
+        const response = await axios({
+            url: BASE_URL + url,
+            method: params.method || 'GET', // Définissez la méthode (GET par défaut)
+            headers: headers,
+            data: params.data || null, // Ajoutez les données si fournies
+            params: params.params || null, // Ajoutez les paramètres de requête si fournis
+            timeout: params.timeout || 5000, // Définissez un délai d'expiration (optionnel)
+        });
+
+        return response.data; // Retournez les données de la réponse
     } catch (error) {
-        // Gérer les erreurs et retourner un message approprié
-        const errorMessage = error.response?.data?.error || error.message || error.response?.status;
+        // Gérer les erreurs
+        const errorMessage = error.response?.data?.error || error.message || 'Une erreur est survenue';
         throw new Error(errorMessage);
     }
 }

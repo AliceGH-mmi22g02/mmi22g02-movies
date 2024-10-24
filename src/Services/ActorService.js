@@ -37,7 +37,7 @@ export const addActor = async (actor) => {
 
 export const getLatestActors = async () => {
     try {
-        const response = await axios.get(`${API_URL}?order[createdAt]=desc&limit=4`);
+        const response = await axios.get(`${API_URL}?order[createdAt]=desc`);
         return response.data['hydra:member'];
     } catch (error) {
         console.error('Erreur lors de la récupération des derniers films:', error);
