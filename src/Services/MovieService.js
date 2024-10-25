@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {delCategory} from "@/Services/CategoryService";
 
 const API_URL = 'http://symfony.mmi-troyes.fr:8319/api/movies';
 
