@@ -74,8 +74,6 @@ export default {
         bio: this.bio,
         media: this.media,
         gender: this.gender,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
       };
       try {
         await addActor(newActor);
