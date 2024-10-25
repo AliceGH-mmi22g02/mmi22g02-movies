@@ -15,7 +15,7 @@
 
 <script>
 import {delActor, getActorById} from '@/Services/ActorService';
-import {delMovie, getMovieById, handleMovieClick} from '@/Services/MovieService';
+import {getMovieById, handleMovieClick} from '@/Services/MovieService';
 import ActorCard from "@/components/ActorCard.vue";
 import MovieCard from "@/components/MovieCard.vue";
 export default {
