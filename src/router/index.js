@@ -70,7 +70,7 @@ const router = new VueRouter({
       path: '/addMovie',
       name: 'AddMovie',
       component: AddMovie,
-    }
+    },
   ],
 });
 export default router;

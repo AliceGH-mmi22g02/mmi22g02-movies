@@ -25,7 +25,17 @@ export const getMovieById = async (id) => {
 export const addMovie = async (actor) => {
     try {
         const response = await axios.post(API_URL, actor);
-        return response.data; // Retourne les données de l'acteur ajouté
+        return response.data; // Retourne les données du film ajouté
+    } catch (error) {
+        console.error('Erreur lors de l\'ajout de l\'acteur:', error);
+        throw error; // Lance l'erreur pour que l'appelant puisse la gérer
+    }
+};
+
+export const editMovie = async (actor) => {
+    try {
+        const response = await axios.patch(API_URL, actor);
+        return response.data; // Retourne les données du film ajouté
     } catch (error) {
         console.error('Erreur lors de l\'ajout de l\'acteur:', error);
         throw error; // Lance l'erreur pour que l'appelant puisse la gérer

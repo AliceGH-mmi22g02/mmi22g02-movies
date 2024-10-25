@@ -98,7 +98,6 @@ export default {
       this.genre = '';
       this.director = '';
       this.synopsis = '';
-      this.poster = '';
     },
     validateDate(field) {
       const regex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/; // Format JJ-MM-AAAA
@@ -106,11 +105,6 @@ export default {
       if (!regex.test(date)) {
         console.error(`${field} est au format invalide. Utilisez JJ-MM-AAAA.`);
       }
-    },
-    formatDateToISO(dateString) {
-      const [day, month, year] = dateString.split('-');
-      const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
-      return date.toISOString();
     }
   }
 };
