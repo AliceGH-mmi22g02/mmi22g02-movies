@@ -26,11 +26,13 @@ export default {
     async submitForm() {
       const newCategory = {
         title: this.title,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       try {
         await addCategory(newCategory);
         this.resetForm();
-        this.$emit('actor-added');
+        this.$emit('category-added');
         alert('Categorie ajoutée avec succès !');
         await this.$router.push({ name: 'categories' });
       } catch (error) {

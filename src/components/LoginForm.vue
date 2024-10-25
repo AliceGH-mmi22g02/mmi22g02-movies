@@ -1,8 +1,6 @@
 <template>
   <div class="loginForm">
     <form @submit.prevent="onSubmitLogin">
-      <p>Remplissez ce formulaire pour vous connecter.</p>
-
       <label for="email"><b>Email</b></label>
       <input
           type="text"
@@ -23,7 +21,7 @@
           required
       />
 
-      <p><button type="submit">Se connecter</button></p>
+      <button type="submit">Soumettre</button>
     </form>
   </div>
 </template>
@@ -57,5 +55,8 @@ export default {
 <style scoped>
 input {
   max-width: 500px;
+}
+button {
+  max-width: 150px;
 }
 </style>

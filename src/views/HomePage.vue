@@ -5,7 +5,7 @@
     <h2>Movies</h2>
     <div class="movies-list">
       <MovieCard
-          v-for="movie in movies"
+          v-for="movie in movies.slice(0, 4)"
           :key="movie.id"
           :movie="movie"
           @click="() => handleMovieClick(movie)"
@@ -15,7 +15,7 @@
     <h2>Actors</h2>
     <div class="actors-list">
       <ActorCard
-          v-for="actor in actors"
+          v-for="actor in actors.slice(0, 4)"
           :key="actor.id"
           :actor="actor"
           @click="() => handleActorClick(actor)"

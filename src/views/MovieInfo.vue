@@ -1,20 +1,41 @@
 <template>
   <div id="movieInfo" v-if="movie">
     <h1>Movie n° {{ movie.id }}</h1>
+    <button @click="deleteMovie" class="addButton">Delete movie</button>
     <MovieCard :movie="movie"/>
     <h2>Actors :</h2>
-    <ActorCard v-for="actor in actors" :key="actor.id" :actor="actor" />
+    <ActorCard
+        v-for="actor in actors"
+        :key="actor.id"
+        :actor="actor"
+    />
   </div>
 </template>
 
 <script>
-import { getMovieById } from '@/Services/MovieService';
+import {getMovieById, delMovie } from '@/Services/MovieService';
 import { getActorById } from '@/Services/ActorService';
 import MovieCard from "@/components/MovieCard.vue";
 import ActorCard from "@/components/ActorCard.vue";
-
+import CategoryCard from "@/components/CategoryCard.vue";
 export default {
-  components: {ActorCard, MovieCard},
+  methods: {
+    deleteMovie() {
+      try {
+        if (this.movie.categories.length > 0) {
+          alert('Vous ne pouvez pas supprimer ce film.');
+        } else {
+          delMovie(this.movie.id);
+          alert('Film supprimer avec succès !');
+          this.$router.push({ name: '/' });
+          window.location.reload();
+        }
+      }  catch (error) {
+        console.error('Erreur lors de la suppression de la catégorie:', error);
+      }
+    },
+  },
+  components: {CategoryCard, ActorCard, MovieCard},
   data() {
     return {
       movie: null,
