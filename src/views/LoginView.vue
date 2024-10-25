@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Login</h1>
+    <p>Remplissez ce formulaire pour vous connecter.</p>
     <LoginForm />
   </div>
 </template>
@@ -16,5 +17,7 @@ export default {
 </script>
 
 <style>
-
+p {
+  margin-left: 50px;
+}
 </style>

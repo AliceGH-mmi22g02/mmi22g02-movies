@@ -8,8 +8,8 @@ import AddActor from '../views/AddActor.vue';
 import MovieInfo from '../views/MovieInfo.vue';
 import AddMovie from '../views/AddMovie.vue';
 import Login from '../views/LoginView.vue';
+import Register from '../views/RegisterView.vue'
 import AddCategory from "@/views/AddCategory.vue";
-// import Register from '../views/RegisterView.vue';
 // import { useSession } from '../stores/session';
 
 const router = new VueRouter({
@@ -45,6 +45,11 @@ const router = new VueRouter({
       path: '/login',
       name: 'login',
       component: Login,
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register,
     },
     {
       path: '/:id',

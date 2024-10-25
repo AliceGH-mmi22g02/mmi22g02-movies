@@ -1,27 +1,27 @@
 <template>
   <div id="body">
-    <h1>Add actor</h1>
+    <h1>Add Actor</h1>
     <div id="form-container">
       <form @submit.prevent="submitForm">
         <div>
-          <label for="firstname">Nom :</label>
-          <input type="text" v-model="lastname" required />
+          <label for="firstname">Prénom :</label>
+          <input type="text" v-model="firstname" required />
         </div>
         <div>
-          <label for="lastname">Prénom :</label>
-          <input type="text" v-model="firstname" required />
+          <label for="lastname">Nom :</label>
+          <input type="text" v-model="lastname" required />
         </div>
         <div>
           <label for="nationality">Nationalité :</label>
           <input type="text" v-model="nationality" required />
         </div>
         <div>
-          <label for="dob">Date de Naissance :</label>
-          <input type="datetime-local" v-model="dob" required />
+          <label for="dob">Date de Naissance (JJ-MM-AAAA) :</label>
+          <input type="text" v-model="dob" @input="validateDate('dob')" required />
         </div>
         <div>
-          <label for="deathDate">Date de décès :</label>
-          <input type="datetime-local" v-model="deathDate" />
+          <label for="deathDate">Date de décès (JJ-MM-AAAA) :</label>
+          <input type="text" v-model="deathDate" @input="validateDate('deathDate')" />
         </div>
         <div>
           <label for="awards">Awards :</label>
@@ -30,10 +30,6 @@
         <div>
           <label for="bio">Biographie :</label>
           <textarea v-model="bio" required></textarea>
-        </div>
-        <div>
-          <label for="media">Média :</label>
-          <input type="url" v-model="media" required />
         </div>
         <div>
           <label for="gender">Genre :</label>
@@ -50,20 +46,20 @@
 </template>
 
 <script>
-import { addActor } from '@/Services/ActorService'; // Vérifiez que le chemin est correct
+import { addActor } from '@/Services/ActorService';
 
 export default {
   data() {
     return {
-      firstname: '', // Prénom
-      lastname: '', // Nom
-      dob: '', // Date de Naissance
-      nationality: '', // Nationalité
-      awards: 0, // Récompenses
-      bio: '', // Biographie
-      media: '', // Média
-      gender: 'female', // Valeur par défaut pour le genre
-      deathDate: '' // Date de décès
+      firstname: '',
+      lastname: '',
+      nationality: '',
+      dob: '',
+      deathDate: '',
+      awards: 0,
+      bio: '',
+      media: '',
+      gender: 'male'
     };
   },
   methods: {
@@ -71,25 +67,19 @@ export default {
       const newActor = {
         firstname: this.firstname,
         lastname: this.lastname,
-        dob: new Date(this.dob).toISOString(), // Format ISO 8601
         nationality: this.nationality,
-        awards: this.awards,
+        dob: this.formatDateToISO(this.dob),
+        deathDate: this.deathDate ? this.formatDateToISO(this.deathDate) : null,
+        awards: parseInt(this.awards) || 0,
         bio: this.bio,
         media: this.media,
         gender: this.gender,
-        deathDate: this.deathDate ? new Date(this.deathDate).toISOString() : null,
-        createdAt: new Date().toISOString(), // Format ISO 8601
-        updatedAt: new Date().toISOString(), // Format ISO 8601
-        movies: [] // Assurez-vous d'inclure un tableau pour les films
       };
-
-      // Affiche l'objet avant l'envoi
-      console.log('Nouvel acteur à ajouter :', JSON.stringify(newActor, null, 2));
-
       try {
         await addActor(newActor);
         this.resetForm();
-        this.$emit('actor-added');
+        alert('Acteur ajouté avec succès !');
+        await this.$router.push({ name: 'actors' });
       } catch (error) {
         if (error.response) {
           console.error('Erreur lors de l\'ajout de l\'acteur:', error.response.data);
@@ -101,13 +91,25 @@ export default {
     resetForm() {
       this.firstname = '';
       this.lastname = '';
-      this.dob = '';
       this.nationality = '';
+      this.dob = '';
+      this.deathDate = '';
       this.awards = 0;
       this.bio = '';
       this.media = '';
-      this.gender = 'female'; // Réinitialiser à la valeur par défaut
-      this.deathDate = '';
+      this.gender = 'male';
+    },
+    validateDate(field) {
+      const regex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/; // Format JJ-MM-AAAA
+      const date = this[field];
+      if (!regex.test(date)) {
+        console.error(`${field} est au format invalide. Utilisez JJ-MM-AAAA.`);
+      }
+    },
+    formatDateToISO(dateString) {
+      const [day, month, year] = dateString.split('-');
+      const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+      return date.toISOString();
     }
   }
 };

@@ -4,7 +4,7 @@ const API_URL = 'http://symfony.mmi-troyes.fr:8319/api/movies';
 
 export const getMovies = async () => {
     try {
-        const { data } = await axios.get(API_URL,);
+        const { data } = await axios.get(`${API_URL}?order[createdAt]=desc`);
         return data['hydra:member'] || [];
     } catch (error) {
         console.error('Erreur lors de la récupération des films:', error);
@@ -45,4 +45,12 @@ export const getLatestMovies = async () => {
 export const handleMovieClick = (movie, router) => {
     // Rediriger vers la page de détails du film
     router.push({ name: 'MovieInfo', params: { id: movie.id } });
+};
+
+export const delMovie = async (id) => {
+    try {
+        await axios.delete(`${API_URL}/${id}`);
+    } catch (error) {
+        throw error;
+    }
 };
