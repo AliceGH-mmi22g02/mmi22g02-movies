@@ -5,7 +5,7 @@ const API_URL = 'http://symfony.mmi-troyes.fr:8319/api/actors';
 // Récupérer tous les acteurs
 export const getActors = async () => {
     try {
-        const { data } = await axios.get(API_URL);
+        const { data } = await axios.get(`${API_URL}?order[createdAt]=desc`);
         return data['hydra:member'] || [];
     } catch (error) {
         console.error('Erreur lors de la récupération des acteurs:', error);

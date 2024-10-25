@@ -8,13 +8,14 @@
         v-for="actor in actors"
         :key="actor.id"
         :actor="actor"
+        @click="handleActorClick(actor)"
     />
   </div>
 </template>
 
 <script>
 import {getMovieById, delMovie } from '@/Services/MovieService';
-import { getActorById } from '@/Services/ActorService';
+import {getActorById, handleActorClick} from '@/Services/ActorService';
 import MovieCard from "@/components/MovieCard.vue";
 import ActorCard from "@/components/ActorCard.vue";
 import CategoryCard from "@/components/CategoryCard.vue";
@@ -22,17 +23,16 @@ export default {
   methods: {
     deleteMovie() {
       try {
-        if (this.movie.categories.length > 0) {
-          alert('Vous ne pouvez pas supprimer ce film.');
-        } else {
           delMovie(this.movie.id);
           alert('Film supprimer avec succès !');
           this.$router.push({ name: '/' });
           window.location.reload();
-        }
       }  catch (error) {
         console.error('Erreur lors de la suppression de la catégorie:', error);
       }
+    },
+    handleActorClick(actor) {
+      handleActorClick(actor, this.$router);
     },
   },
   components: {CategoryCard, ActorCard, MovieCard},

@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="home-container">
+    <div>
     <h1>Home</h1>
 
     <h2>Movies</h2>
@@ -11,7 +12,8 @@
           @click="() => handleMovieClick(movie)"
       />
     </div>
-
+    </div>
+     <div>
     <h2>Actors</h2>
     <div class="actors-list">
       <ActorCard
@@ -21,6 +23,7 @@
           @click="() => handleActorClick(actor)"
       />
     </div>
+     </div>
   </div>
 </template>
 
@@ -60,4 +63,8 @@ onMounted(async () => {
 </script>
 
 <style>
+.home-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 </style>
