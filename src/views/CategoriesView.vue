@@ -16,6 +16,7 @@
           v-for="category in filteredCategories"
           :key="category.id"
           :category="category"
+
           @delete-category="handleCategoryDelete"
       />
     </div>
@@ -56,7 +57,7 @@ export default {
         } else {
           delCategory(category.id);
           alert('Categorie supprimer avec succès !');
-
+          window.location.reload();
         }
       }  catch (error) {
         console.error('Erreur lors de la suppression de la catégorie:', error);

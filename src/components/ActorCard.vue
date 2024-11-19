@@ -1,6 +1,6 @@
 <template>
   <div class="actorCard" @click="handleClick"> <!-- Gère le clic ici -->
-    <img :src="actor.media" alt="Photo de l'acteur" />
+    <!--<img :src="actor.media" alt="Photo de l'acteur" />-->
     <h3>{{ actor.lastname }} {{ actor.firstname }}</h3>
     <p>Date de naissance : {{ formattedBirthDate }}</p>
     <p>Nationalité : {{ actor.nationality }}</p>

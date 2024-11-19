@@ -1,113 +1,110 @@
 <template>
   <div id="body">
-    <h1>Add actor</h1>
+    <h1>Add Movie</h1>
     <div id="form-container">
       <form @submit.prevent="submitForm">
         <div>
-          <label for="firstname">Nom :</label>
-          <input type="text" v-model="lastname" required />
+          <label for="title">Titre :</label>
+          <input type="text" v-model="title" required />
         </div>
         <div>
-          <label for="lastname">Prénom :</label>
-          <input type="text" v-model="firstname" required />
+          <label for="releaseDate">Date de Sortie (JJ-MM-AAAA) :</label>
+          <input type="date" v-model="releaseDate" @input="validateDate('releaseDate')" required />
         </div>
         <div>
-          <label for="nationality">Nationalité :</label>
-          <input type="text" v-model="nationality" required />
+          <label for="director">Réalisateur :</label>
+          <input type="text" v-model="director" required />
         </div>
         <div>
-          <label for="dob">Date de Naissance :</label>
-          <input type="datetime-local" v-model="dob" required />
+          <label for="synopsis">Synopsis :</label>
+          <textarea v-model="synopsis" required></textarea>
         </div>
         <div>
-          <label for="deathDate">Date de décès :</label>
-          <input type="datetime-local" v-model="deathDate" />
+          <label for="award">Note :</label>
+          <input type="number" v-model="awards">
         </div>
-        <div>
-          <label for="awards">Awards :</label>
-          <input type="number" v-model="awards" min="0" />
-        </div>
-        <div>
-          <label for="bio">Biographie :</label>
-          <textarea v-model="bio" required></textarea>
-        </div>
-        <div>
-          <label for="media">Média :</label>
-          <input type="url" v-model="media" required />
-        </div>
-        <div>
-          <label for="gender">Genre :</label>
-          <select v-model="gender" required>
-            <option value="male">male</option>
-            <option value="female">female</option>
+          <!--<div>
+          <label for="genre">Genre :</label>
+          <select v-model="genre" required>
+            <option v-for="category in categories" :key="category.id" :value="category.title">
+              {{ category.title }}
+            </option>
           </select>
-        </div>
-
-        <button type="submit">Ajouter l'acteur</button>
+        </div>-->
+        <!--<div>
+          <label for="actors">Acteurs :</label>
+          <select v-model="actors" required>
+            <option v-for="actor in actors" :key="actor.id" :value="actor.firstname">
+              {{ actor.lastname }} {{ actor.firstname }}
+            </option>
+          </select>
+        </div>-->
+        <button type="submit">Ajouter le film</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { addActor } from '@/Services/ActorService'; // Vérifiez que le chemin est correct
+import { addMovie } from '@/Services/MovieService';
+import { getCategories } from '@/Services/CategoryService';
+import { getActors } from '@/Services/ActorService';
 
 export default {
   data() {
     return {
-      firstname: '', // Prénom
-      lastname: '', // Nom
-      dob: '', // Date de Naissance
-      nationality: '', // Nationalité
-      awards: 0, // Récompenses
-      bio: '', // Biographie
-      media: '', // Média
-      gender: 'female', // Valeur par défaut pour le genre
-      deathDate: '' // Date de décès
+      title: '',
+      releaseDate: '',
+      genre: '',
+      director: '',
+      synopsis: '',
+      awards:'',
+      categories: [], // Stocker les catégories ici
+      actors: []
     };
+  },
+  async mounted() {
+    // Récupérer les catégories lorsque le composant est monté
+    this.categories = await getCategories();
+    this.actors = await getActors();
   },
   methods: {
     async submitForm() {
-      const newActor = {
-        firstname: this.firstname,
-        lastname: this.lastname,
-        dob: new Date(this.dob).toISOString(), // Format ISO 8601
-        nationality: this.nationality,
-        awards: this.awards,
-        bio: this.bio,
-        media: this.media,
-        gender: this.gender,
-        deathDate: this.deathDate ? new Date(this.deathDate).toISOString() : null,
-        createdAt: new Date().toISOString(), // Format ISO 8601
-        updatedAt: new Date().toISOString(), // Format ISO 8601
-        movies: [] // Assurez-vous d'inclure un tableau pour les films
+      const newMovie = {
+        title: this.title,
+        releaseDate: this.releaseDate,
+        director: this.director,
+        synopsis: this.synopsis,
+        awards:this.entries,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
-
-      // Affiche l'objet avant l'envoi
-      console.log('Nouvel acteur à ajouter :', JSON.stringify(newActor, null, 2));
-
       try {
-        await addActor(newActor);
+        await addMovie(newMovie);
         this.resetForm();
-        this.$emit('actor-added');
+        alert('Film ajouté avec succès !');
+        await this.$router.push({ name: 'movies' });
       } catch (error) {
         if (error.response) {
-          console.error('Erreur lors de l\'ajout de l\'acteur:', error.response.data);
+          console.error('Erreur lors de l\'ajout du film:', error.response.data);
         } else {
-          console.error('Erreur lors de l\'ajout de l\'acteur:', error);
+          console.error('Erreur lors de l\'ajout du film:', error);
         }
       }
     },
     resetForm() {
-      this.firstname = '';
-      this.lastname = '';
-      this.dob = '';
-      this.nationality = '';
-      this.awards = 0;
-      this.bio = '';
-      this.media = '';
-      this.gender = 'female'; // Réinitialiser à la valeur par défaut
-      this.deathDate = '';
+      this.title = '';
+      this.releaseDate = '';
+      this.genre = '';
+      this.director = '';
+      this.synopsis = '';
+    },
+    validateDate(field) {
+      const regex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/; // Format JJ-MM-AAAA
+      const date = this[field];
+      if (!regex.test(date)) {
+        console.error(`${field} est au format invalide. Utilisez JJ-MM-AAAA.`);
+      }
     }
   }
 };
